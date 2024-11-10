@@ -23,7 +23,6 @@ namespace Backend.Controllers
             _usersAuthorazationService = usersAuthorizationService;
         }
 
-        // GET: api/<UsersController>/@id
         [HttpGet("{uuid}")]
         public async Task<User> GetUser(string uuid)
         {
@@ -41,14 +40,14 @@ namespace Backend.Controllers
         }
 
         // Put: api/<UsersController>
-        [HttpPost()]
+        [HttpPost("create")]
         public async Task<LoginReponse> AddUser([FromBody] UserPut user)
         {
             return new LoginReponse() { token = await _usersService.addUser(user, new UserAuthType[] {UserAuthType.user}) };
         }
 
         // Post: api/<UsersController>/login
-        [HttpPost("login")]
+        [HttpPost("token")]
         public async Task<LoginReponse> login([FromBody] LoginRequest loginData)
         {
             return new LoginReponse()
@@ -57,7 +56,7 @@ namespace Backend.Controllers
             };
         }
 
-        [HttpGet("auth")]
+        [HttpGet("is_token_correct")]
         public async Task<bool> auth()
         {
             try
@@ -71,7 +70,6 @@ namespace Backend.Controllers
             return true;
         }
 
-
         [HttpPut("language/{lang}/{uuid}")]
         public async Task UpdateLanguage(string lang, string uuid)
         {
@@ -81,7 +79,7 @@ namespace Backend.Controllers
             await _usersService.UpdateUserLanguage(uuid, lang);
         }
 
-        [HttpPut("request/reset/{email}")]
+        [HttpPut("request_password_reset/{email}")]
         public async Task ResetPasswordRequest(string email)
         {
             User user = await _usersService.getUserByEmail(email);
@@ -89,7 +87,7 @@ namespace Backend.Controllers
             await _usersService.RequestResetUserPassword(user.UUID);
         }
 
-        [HttpPost("reset/correct/{code}/{email}")]
+        [HttpPost("request_password_reset/correct_code/{code}/{email}")]
         public async Task<bool> ResetPasswordCodeCorrect(int code, string email)
         {
             User user = await _usersService.getUserByEmail(email);
@@ -97,7 +95,7 @@ namespace Backend.Controllers
             return await _usersService.IsUserCodeCorrect(user.UUID, code);
         }
 
-        [HttpPut("reset/{email}")]
+        [HttpPut("request_password_reset/reset/{email}")]
         public async Task ResetPassword([FromBody] ResetPasswordRequest request,string email)
         {
             User user = await _usersService.getUserByEmail(email);

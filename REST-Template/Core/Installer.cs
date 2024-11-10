@@ -1,4 +1,5 @@
 ﻿using Backend.Services;
+using Backend.Services.Core;
 using Backend.Services.Users;
 
 namespace Backend.DiContainer
@@ -12,6 +13,7 @@ namespace Backend.DiContainer
             container.AddTransient<UsersService>();
             container.AddTransient<UsersAuthenticationService>();
             container.AddTransient<UsersAuthorazationService>();
+            container.AddTransient<FileService>();
 
             // Register your services and repositories here
         }

@@ -7,7 +7,7 @@ namespace Backend.migrations
         public static void registerServices(IServiceCollection container)
         {
             container.AddTransient<MigrationController>();
-            //container.AddTransient<IMigration, AddUsersTableMigration>();
+            container.AddTransient<IMigration, AddUsersTableMigration>();
         }
     }
 }

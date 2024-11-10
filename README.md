@@ -46,6 +46,23 @@ If you want to know more or modify the swagger. There are plenty of resources ab
 
 ### Mysql
 
+The Database language I chose is MySql because I am comfortable with it. It is quite easily swapped out for other languages that Dapper supports. You would just have to rewrite some queries in the user repositories and Migration code and swap out the code in the base repository.
+
+It is merely a stylistic choice.
+
+### Basic user creation and Auth
+
+I added some basic functionality for this project. This comes in the form of my personally created User creation and User Auth system. The endpoints should be self explanatory. And i will not go too deep into the technical details. 
+But these are the basics. 
+A user has a UUID which is used as the unique identifier. This is used for Authentication -> checks against a hash created from the password hash and the email always resulting in a check that can not be manipulated by the user.
+
+!! **Change the `GetHashSring(string inputString)` function for even better security** !!
+And obviously never show this code to users
+
+Authorization is very basic by only checking if the token belongs to the user trying to do an action but should be extended per feature or as needed.
+
+### Testing
+TODO
 
 
 

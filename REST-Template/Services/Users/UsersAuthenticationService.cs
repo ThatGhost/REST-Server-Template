@@ -48,10 +48,7 @@ namespace Backend.Services
             foreach (byte b in GetHash(inputString))
                 sb.Append(b.ToString("X2"));
 
-            string hash = sb.ToString();
-            hash += hash.Substring(5, 6);
-            hash = hash.Substring(7, 8);
-            hash += hash.Substring(2, 2);
+            // Add more randomness for better security
 
             return sb.ToString();
         }

@@ -11,7 +11,7 @@ using Quartz;
 
 namespace Backend.core
 {
-    public static class Triggers
+    public static class JobTriggers
     {
         public static void RegisterJobs(this IServiceCollection services)
         {

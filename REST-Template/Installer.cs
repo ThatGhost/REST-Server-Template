@@ -2,7 +2,7 @@
 using Backend.Services.Core;
 using Backend.Services.Users;
 
-namespace Backend.DiContainer
+namespace REST_Template
 {
     class DiContainer
     {

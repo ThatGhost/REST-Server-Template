@@ -2,7 +2,7 @@
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace BreadAPI
+namespace Backend
 {
     public class AuthorizationHeaderFilter : IOperationFilter
     {

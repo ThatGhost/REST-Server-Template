@@ -57,15 +57,17 @@ But these are the basics.
 A user has a UUID which is used as the unique identifier. This is used for Authentication -> checks against a hash created from the password hash and the email always resulting in a check that can not be manipulated by the user.
 
 !! **Change the `GetHashSring(string inputString)` function for even better security** !!
-And obviously never show this code to users
+
+never show this code to users
 
 Authorization is very basic by only checking if the token belongs to the user trying to do an action but should be extended per feature or as needed.
 
 ### Testing
-TODO
 
+Tests are done using the NUnit framework from Microsoft. This is again a widely used and understood framework so there are a bunch of resources online if you had any questions. 
+All the user services are tested in the `Tests` project. When u create new services it is good practice to add your unit tests immediately. The premade tests should be a good example of common practices.
 
+## Closing word
 
-
-
-
+This project has all the necessary features for a REST backend that can easily be deployed. It harnesses the power of common libraries to make it as easy to understand and pick up as possible.
+If you end up using this template for any projects give this Repo a star, please ;)

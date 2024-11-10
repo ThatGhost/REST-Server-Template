@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Backend.Services
 {
-    public class UsersAuthenticationService
+    public class UsersAuthenticationService : IUsersAuthenticationService
     {
-        private readonly UsersRepository _usersRepository;
-        public UsersAuthenticationService(UsersRepository usersRepository)
+        private readonly IUsersRepository _usersRepository;
+        public UsersAuthenticationService(IUsersRepository usersRepository)
         {
             _usersRepository = usersRepository;
         }
@@ -25,7 +25,7 @@ namespace Backend.Services
         private async Task<bool> compareLoginHash(string incomingToken)
         {
             string uuid = incomingToken.Substring(0, incomingToken.IndexOf(":"));
-            UserAuth userAuthData = await _usersRepository.getUserAuthData(uuid);
+            UserAuth userAuthData = await _usersRepository.GetUserAuthData(uuid);
 
             string correctUserAuthToken = GetHashString(userAuthData.Email + userAuthData.Password);
             string incomingUserAuthToken = incomingToken.Substring(incomingToken.IndexOf(':') + 1);
@@ -35,11 +35,11 @@ namespace Backend.Services
 
         public async Task<string> login(string email, string password)
         {
-            UserAuth userAuthData = await _usersRepository.getUserAuthDataByEmail(email);
-            string newPasswordHash = GetHashString(password);
+            UserAuth userAuthData = await _usersRepository.GetUserAuthDataByEmail(email);
+            string passwordHash = GetHashString(password);
 
-            if (newPasswordHash != userAuthData.Password) throw new UnauthorizedAccessException("password incorrect");
-            return userAuthData.UUID.ToString() + ":" + GetHashString(email + newPasswordHash);
+            if (passwordHash != userAuthData.Password) throw new UnauthorizedAccessException("password incorrect");
+            return userAuthData.UUID.ToString() + ":" + GetHashString(email + passwordHash);
         }
 
         public string GetHashString(string inputString)
@@ -58,6 +58,5 @@ namespace Backend.Services
             using (HashAlgorithm algorithm = SHA256.Create())
                 return algorithm.ComputeHash(Encoding.UTF8.GetBytes(inputString));
         }
-
     }
 }

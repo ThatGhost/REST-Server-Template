@@ -4,23 +4,23 @@ using Backend.core;
 
 namespace Backend.Services.Users
 {
-    public class UsersService
+    public class UsersService: IUsersService
     {
-        private readonly UsersRepository _usersRepository;
-        private readonly UsersAuthenticationService _usersAuthenticationService;
-        private readonly FileService _fileService;
+        private readonly IUsersRepository _usersRepository;
+        private readonly IUsersAuthenticationService _usersAuthenticationService;
+        private readonly IFileService _fileService;
 
         public UsersService(
-            UsersRepository usersRepository,
-            UsersAuthenticationService usersAuthenticationService,
-            FileService fileService)
+            IUsersRepository usersRepository,
+            IUsersAuthenticationService usersAuthenticationService,
+            IFileService fileService)
         {
             _usersRepository = usersRepository;
             _usersAuthenticationService = usersAuthenticationService;
             _fileService = fileService;
         }
 
-        public async Task<string> addUser(UserPut newUser, UserAuthType[] auth)
+        public async Task<string> AddUser(UserPut newUser, UserAuthType[] auth)
         {
             if (!IsValidEmail(newUser.Email)) throw new BadRequestExeption("not a valid email");
             if (newUser.Password.Length <= 5) throw new BadRequestExeption("password not long enough");
@@ -28,17 +28,17 @@ namespace Backend.Services.Users
             newUser.Email = newUser.Email.ToLower();
             newUser.Password = _usersAuthenticationService.GetHashString(newUser.Password);
 
-            return await _usersRepository.addUser(newUser, auth);
+            return await _usersRepository.AddUser(newUser, auth);
         }
 
-        public async Task<User> getUser(string uuid)
+        public async Task<User> GetUser(string uuid)
         {
-            return await _usersRepository.getUser(uuid);
+            return await _usersRepository.GetUser(uuid);
         }
 
-        public async Task<User> getUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
-            return await _usersRepository.getUserByEmail(email.ToLower());
+            return await _usersRepository.GetUserByEmail(email.ToLower());
         }
 
         public async Task UpdateUserLanguage(string uuid, string language)
@@ -49,16 +49,14 @@ namespace Backend.Services.Users
             await _usersRepository.UpdateUsersLanguage(language, uuid);
         }
 
+        // TODO: Send Email with prefered API to get the code to the user
         public async Task RequestResetUserPassword(string uuid)
         {
-            User user = await _usersRepository.getUser(uuid);
-            string HTMLContent = _fileService.ReadFile($"Emails/{user.Language}/ResetPasswordEmail.html");
+            User user = await _usersRepository.GetUser(uuid);
 
             Random rnd = new Random();
             int code = rnd.Next(999999);
-            HTMLContent = HTMLContent.Replace("$", code.ToString("D6"));
 
-            // TODO: Send Email with prefered API to get the code to the user
             await _usersRepository.AddPasswordResetRequest(uuid, code);
         }
 

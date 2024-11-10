@@ -5,14 +5,14 @@ using Backend.core;
 
 namespace Backend.Services
 {
-    public class UsersRepository : BaseRepository
+    public class UsersRepository : BaseRepository, IUsersRepository
     {
         public UsersRepository(IConfiguration config) : base(config)
         {
 
         }
 
-        public async Task<User> getUser(string uuid)
+        public async Task<User> GetUser(string uuid)
         {
             UserGetData? user = await readOne<UserGetData>($"select email, language from users where id = @uuid;", new { uuid });
             if (user == null) throw new NotFoundExeption("User not found");
@@ -25,7 +25,7 @@ namespace Backend.Services
             };
         }
 
-        public async Task<User> getUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
             UserGetData? user = await readOne<UserGetData>($"select email, language, id from users where email = @email;", new { email });
             if (user == null) throw new NotFoundExeption("User not found");
@@ -39,7 +39,7 @@ namespace Backend.Services
         }
 
 
-        public async Task<UserAuth> getUserAuthData(string uuid)
+        public async Task<UserAuth> GetUserAuthData(string uuid)
         {
             UserAuthData? userAuthData = await readOne<UserAuthData>($"select password, id, email, acces from users where id = @uuid", new { uuid });
             if (userAuthData == null) throw new NotFoundExeption("User not found");
@@ -47,7 +47,7 @@ namespace Backend.Services
             return convertToUserAuth(userAuthData);
         }
 
-        public async Task<UserAuth> getUserAuthDataByEmail(string email)
+        public async Task<UserAuth> GetUserAuthDataByEmail(string email)
         {
             UserAuthData? userAuthData = await readOne<UserAuthData>($"select password, id, email, acces from users where email = '{email}'");
             if (userAuthData == null) throw new NotFoundExeption("User not found");
@@ -66,7 +66,7 @@ namespace Backend.Services
             };
         }
 
-        public async Task<string> addUser(UserPut user, UserAuthType[] acces)
+        public async Task<string> AddUser(UserPut user, UserAuthType[] acces)
         {
             string accesString = "";
             foreach (var acc in acces) accesString += (char)acc;

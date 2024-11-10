@@ -2,18 +2,17 @@
 using Backend.Services.Core;
 using Backend.Services.Users;
 
-namespace REST_Template
+namespace Backend
 {
     class DiContainer
     {
         public static void registerServices(IServiceCollection container)
         {
-            container.AddTransient<HttpClient>();
-            container.AddTransient<UsersRepository>();
-            container.AddTransient<UsersService>();
-            container.AddTransient<UsersAuthenticationService>();
-            container.AddTransient<UsersAuthorazationService>();
-            container.AddTransient<FileService>();
+            container.AddTransient<IFileService, FileService>();
+            container.AddTransient<IUsersRepository, UsersRepository>();
+            container.AddTransient<IUsersService, UsersService>();
+            container.AddTransient<IUsersAuthenticationService, UsersAuthenticationService>();
+            container.AddTransient<IUsersAuthorazationService, UsersAuthorazationService>();
 
             // Register your services and repositories here
         }

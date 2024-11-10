@@ -1,24 +1,22 @@
-﻿using System.Linq;
-
-using Backend.Services.Users;
+﻿using Backend.Services.Users;
 
 namespace Backend.Services
 {
-    public class UsersAuthorazationService
+    public class UsersAuthorazationService: IUsersAuthorazationService
     {
-        private readonly UsersRepository _usersRepository;
-        public UsersAuthorazationService(UsersRepository usersService)
+        private readonly IUsersRepository _usersRepository;
+        public UsersAuthorazationService(IUsersRepository usersService)
         {
             _usersRepository = usersService;
         }
 
-        public void isUserRequestedUser(IHeaderDictionary headers, string uuid)
+        public void IsUserRequestedUser(IHeaderDictionary headers, string uuid)
         {
-            string tokenid = getUserId(headers);
+            string tokenid = GetUserId(headers);
             if (tokenid != uuid) throw new UnauthorizedAccessException("user not authorized");
         }
 
-        public string getUserId(IHeaderDictionary headers)
+        public string GetUserId(IHeaderDictionary headers)
         {
             const string authHeaderKey = "Authentication";
             if (!headers.ContainsKey(authHeaderKey)) throw new UnauthorizedAccessException("No authentication header found");
@@ -28,18 +26,18 @@ namespace Backend.Services
 
         public async Task<UserAuth> GetUserAuth(string uuid)
         {
-            return await _usersRepository.getUserAuthData(uuid);
+            return await _usersRepository.GetUserAuthData(uuid);
         }
 
-        public async Task isUserAuthorizedOnAcces(string uuid, UserAuthType acces)
+        public async Task IsUserAuthorizedOnAccess(string uuid, UserAuthType acces)
         {
-            UserAuth user = await _usersRepository.getUserAuthData(uuid);
+            UserAuth user = await _usersRepository.GetUserAuthData(uuid);
             if (!user.Acces.Contains(acces)) throw new UnauthorizedAccessException("user not authorized");
         }
 
-        public async Task isUserAuthorizedOnAcces(string uuid, UserAuthType[] acces)
+        public async Task IsUserAuthorizedOnAccess(string uuid, UserAuthType[] acces)
         {
-            UserAuth user = await _usersRepository.getUserAuthData(uuid);
+            UserAuth user = await _usersRepository.GetUserAuthData(uuid);
             bool isAuth = false;
             foreach (var auth in acces)
             {

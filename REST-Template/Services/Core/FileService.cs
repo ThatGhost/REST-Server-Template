@@ -1,9 +1,11 @@
 ﻿using System.IO;
 using System.Text;
 
+using Backend.Services.Core;
+
 namespace Backend.Services.Core
 {
-    public class FileService
+    public class FileService: IFileService
     {
         public string ReadFile(string path)
         {

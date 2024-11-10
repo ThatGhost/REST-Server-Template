@@ -4,7 +4,7 @@ using Backend.core;
 using Backend.migrations;
 using Backend.migrations.core;
 
-namespace REST_Template
+namespace Backend
 {
     public class Program
     {

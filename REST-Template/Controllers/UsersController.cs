@@ -26,14 +26,14 @@ namespace Backend.Controllers
         [HttpGet("{uuid}")]
         public async Task<User> GetUser(string uuid)
         {
-            return await _usersService.getUser(uuid);
+            return await _usersService.GetUser(uuid);
         }
 
         [HttpGet("auth/{uuid}")]
         public async Task<List<char>> GetUserAuthLevels(string uuid)
         {
             await _usersAuthenticationService.AuthenticateUser(Request.Headers);
-            _usersAuthorazationService.isUserRequestedUser(Request.Headers, uuid);
+            _usersAuthorazationService.IsUserRequestedUser(Request.Headers, uuid);
 
             UserAuth auth = await _usersAuthorazationService.GetUserAuth(uuid);
             return auth.Acces.Select(x => (char)x).ToList();
@@ -43,7 +43,7 @@ namespace Backend.Controllers
         [HttpPost("create")]
         public async Task<LoginReponse> AddUser([FromBody] UserPut user)
         {
-            return new LoginReponse() { token = await _usersService.addUser(user, new UserAuthType[] {UserAuthType.user}) };
+            return new LoginReponse() { token = await _usersService.AddUser(user, new UserAuthType[] {UserAuthType.user}) };
         }
 
         // Post: api/<UsersController>/login
@@ -74,7 +74,7 @@ namespace Backend.Controllers
         public async Task UpdateLanguage(string lang, string uuid)
         {
             await _usersAuthenticationService.AuthenticateUser(Request.Headers);
-            _usersAuthorazationService.isUserRequestedUser(Request.Headers, uuid);
+            _usersAuthorazationService.IsUserRequestedUser(Request.Headers, uuid);
 
             await _usersService.UpdateUserLanguage(uuid, lang);
         }
@@ -82,7 +82,7 @@ namespace Backend.Controllers
         [HttpPut("request_password_reset/{email}")]
         public async Task ResetPasswordRequest(string email)
         {
-            User user = await _usersService.getUserByEmail(email);
+            User user = await _usersService.GetUserByEmail(email);
 
             await _usersService.RequestResetUserPassword(user.UUID);
         }
@@ -90,7 +90,7 @@ namespace Backend.Controllers
         [HttpPost("request_password_reset/correct_code/{code}/{email}")]
         public async Task<bool> ResetPasswordCodeCorrect(int code, string email)
         {
-            User user = await _usersService.getUserByEmail(email);
+            User user = await _usersService.GetUserByEmail(email);
 
             return await _usersService.IsUserCodeCorrect(user.UUID, code);
         }
@@ -98,7 +98,7 @@ namespace Backend.Controllers
         [HttpPut("request_password_reset/reset/{email}")]
         public async Task ResetPassword([FromBody] ResetPasswordRequest request,string email)
         {
-            User user = await _usersService.getUserByEmail(email);
+            User user = await _usersService.GetUserByEmail(email);
 
             await _usersService.ResetUserPassword(user.UUID, request.code, request.password);
         }

@@ -1,4 +1,4 @@
-﻿namespace BREADAPI.core
+﻿namespace Backend.core
 {
     
     public class NotFoundExeption: Exception 

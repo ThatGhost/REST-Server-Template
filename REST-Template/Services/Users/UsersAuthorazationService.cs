@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 
-using BreadAPI.Services.Users;
+using Backend.Services.Users;
 
-namespace BreadAPI.Services
+namespace Backend.Services
 {
     public class UsersAuthorazationService
     {

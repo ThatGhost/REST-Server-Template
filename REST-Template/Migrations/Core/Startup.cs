@@ -1,6 +1,6 @@
 ﻿
 
-namespace BreadAPI.migrations.core
+namespace Backend.migrations.core
 {
     public class Startup : IHostedService
     {

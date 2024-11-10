@@ -1,10 +1,10 @@
-﻿using BreadAPI.Services;
-using BreadAPI.Services.Users;
+﻿using Backend.Services;
+using Backend.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace BreadAPI.Controllers
+namespace Backend.Controllers
 {
     [Route("[controller]")]
     [ApiController]

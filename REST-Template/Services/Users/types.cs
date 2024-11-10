@@ -1,4 +1,4 @@
-﻿namespace BreadAPI.Services.Users
+﻿namespace Backend.Services.Users
 {
     public enum UserAuthType
     {

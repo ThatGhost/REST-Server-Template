@@ -1,9 +1,9 @@
-﻿using BreadAPI.Services.Users;
-using BreadAPI.Controllers;
-using BreadAPI.Services.Core;
-using BREADAPI.core;
+﻿using Backend.Services.Users;
+using Backend.Controllers;
+using Backend.Services.Core;
+using Backend.core;
 
-namespace BreadAPI.Services
+namespace Backend.Services
 {
     public class UsersRepository : BaseRepository
     {

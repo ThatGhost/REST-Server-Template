@@ -1,4 +1,4 @@
-﻿namespace BreadAPI.migrations.core
+﻿namespace Backend.migrations.core
 {
     public interface IMigration
     {

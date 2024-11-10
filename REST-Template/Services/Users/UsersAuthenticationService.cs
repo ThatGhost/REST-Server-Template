@@ -1,9 +1,9 @@
-﻿using BreadAPI.Services.Users;
+﻿using Backend.Services.Users;
 
 using System.Security.Cryptography;
 using System.Text;
 
-namespace BreadAPI.Services
+namespace Backend.Services
 {
     public class UsersAuthenticationService
     {

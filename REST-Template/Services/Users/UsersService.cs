@@ -1,27 +1,22 @@
-﻿using BreadAPI.Services.Users;
-using BreadAPI.Controllers;
-using BREADAPI.Services.Emails;
-using BREADAPI.Services.Core;
-using BREADAPI.core;
+﻿using Backend.Controllers;
+using Backend.Services.Core;
+using Backend.core;
 
-namespace BreadAPI.Services.Users
+namespace Backend.Services.Users
 {
     public class UsersService
     {
         private readonly UsersRepository _usersRepository;
         private readonly UsersAuthenticationService _usersAuthenticationService;
-        private readonly EmailService _emailService;
         private readonly FileService _fileService;
 
         public UsersService(
             UsersRepository usersRepository,
             UsersAuthenticationService usersAuthenticationService,
-            EmailService emailService,
             FileService fileService)
         {
             _usersRepository = usersRepository;
             _usersAuthenticationService = usersAuthenticationService;
-            _emailService = emailService;
             _fileService = fileService;
         }
 
@@ -63,7 +58,7 @@ namespace BreadAPI.Services.Users
             int code = rnd.Next(999999);
             HTMLContent = HTMLContent.Replace("$", code.ToString("D6"));
 
-            await _emailService.SendEmail(user.Email, "Password reset", HTMLContent);
+            // TODO: Send Email with prefered API to get the code to the user
             await _usersRepository.AddPasswordResetRequest(uuid, code);
         }
 

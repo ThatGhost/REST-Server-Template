@@ -1,7 +1,7 @@
-﻿using BreadAPI.Services.Core;
+﻿using Backend.Services.Core;
 using System.Linq;
 
-namespace BreadAPI.migrations.core
+namespace Backend.migrations.core
 {
     public class MigrationController: BaseRepository
     {

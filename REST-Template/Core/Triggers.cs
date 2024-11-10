@@ -1,4 +1,4 @@
-﻿using BREADAPI.Jobs;
+﻿using Backend.Jobs;
 using Quartz;
 
 // * * * * * <command to execute>
@@ -9,7 +9,7 @@ using Quartz;
 // | hour (0–23)
 // minute (0–59)
 
-namespace BREADAPI.core
+namespace Backend.core
 {
     public static class Triggers
     {
@@ -20,15 +20,10 @@ namespace BREADAPI.core
             {
                 // --Jobs--
 
-                var jobKey = JobKey.Create(nameof(FailedOrdersJob));
-                quartz.AddJob<FailedOrdersJob>(jobKey)
+                var jobKey = JobKey.Create(nameof(ExampleJob));
+                quartz.AddJob<ExampleJob>(jobKey)
                 .AddTrigger(trigger => trigger.ForJob(jobKey)
                 .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(7, 30))); // everyday at 7:30am
-
-                jobKey = JobKey.Create(nameof(CreateBakerOrdersJob));
-                quartz.AddJob<CreateBakerOrdersJob>(jobKey)
-                .AddTrigger(trigger => trigger.ForJob(jobKey)
-                .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(22, 30))); // everyday at 10:30pm
             });   
             
         }

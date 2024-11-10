@@ -1,4 +1,11 @@
 
+using Backend.core;
+using Backend.DiContainer;
+using Backend.migrations;
+using Backend.migrations.core;
+
+using BreadAPI;
+
 namespace REST_Template
 {
     public class Program
@@ -7,12 +14,34 @@ namespace REST_Template
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Dont use certificates for local development
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    name: "_AllowLocalDevelopment",
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    }
+                );
+            });
 
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+
+            builder.Services.RegisterJobs();
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(config =>
+            {
+                config.OperationFilter<AuthorizationHeaderFilter>();
+            });
+
+            DiContainer.registerServices(builder.Services);
+            MigrationRegistry.registerServices(builder.Services);
+            builder.Services.AddHostedService<Startup>();
 
             var app = builder.Build();
 
@@ -22,12 +51,14 @@ namespace REST_Template
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            else
+            {
+                app.UseMiddleware<ExeptionHandler>();
+            }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("_AllowLocalDevelopment");
             app.UseAuthorization();
-
-
             app.MapControllers();
 
             app.Run();
